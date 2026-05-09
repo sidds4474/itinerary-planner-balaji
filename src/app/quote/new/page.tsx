@@ -7,6 +7,7 @@ import HotelOptionsSection from '@/components/quote/HotelOptionsSection';
 import ItinerarySection from '@/components/quote/ItinerarySection';
 import InclusionsSection from '@/components/quote/InclusionsSection';
 import DeliverySection from '@/components/quote/DeliverySection';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const INITIAL_FORM: QuoteFormData = {
   clientName: '',
@@ -86,9 +87,12 @@ export default function NewQuotePage() {
             <span className="text-xs ml-2" style={{ color: 'var(--text-muted)' }}>Quote Builder</span>
           </div>
         </div>
-        <span className="text-xs px-2.5 py-1 rounded-full" style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)' }}>
-          Step {step + 1} / {STEPS.length}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '20px', background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: '1px solid var(--bg-border)' }}>
+            Step {step + 1} / {STEPS.length}
+          </span>
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Step tabs */}

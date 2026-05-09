@@ -1,42 +1,88 @@
 @import "tailwindcss";
 
+/* ── Brand tokens (always the same) ── */
 :root {
   --saffron: #FF6B00;
   --saffron-light: #FF8C33;
-  --saffron-dim: #7A3300;
-  --green: #1A3A0A;
-  --green-light: #243F14;
+  --green-dark: #1A3A0A;
+  --green: #2D5016;
   --gold: #C9A84C;
-  --gold-light: #E8C96A;
-
-  /* Dark mode palette */
-  --bg-base: #0E0E0E;
-  --bg-surface: #161616;
-  --bg-elevated: #1F1F1F;
-  --bg-border: #2A2A2A;
-  --bg-input: #1A1A1A;
-
-  --text-primary: #F0F0F0;
-  --text-secondary: #A0A0A0;
-  --text-muted: #606060;
-
-  --background: var(--bg-base);
-  --foreground: var(--text-primary);
 }
 
-* {
-  box-sizing: border-box;
+/* ── Light theme ── */
+[data-theme="light"] {
+  --bg-base:     #F5F5F0;
+  --bg-surface:  #FFFFFF;
+  --bg-elevated: #F0EFE9;
+  --bg-input:    #FFFFFF;
+  --bg-border:   #E2E0D8;
+
+  --text-primary:   #1A1A1A;
+  --text-secondary: #555550;
+  --text-muted:     #999990;
+
+  --scrollbar-track: #EBEBEB;
+  --scrollbar-thumb: #D0CFC8;
+}
+
+/* ── Dark theme ── */
+[data-theme="dark"] {
+  --bg-base:     #0E0E0E;
+  --bg-surface:  #161616;
+  --bg-elevated: #1F1F1F;
+  --bg-input:    #141414;
+  --bg-border:   #2C2C2C;
+
+  --text-primary:   #F0F0F0;
+  --text-secondary: #A0A0A0;
+  --text-muted:     #606060;
+
+  --scrollbar-track: #1A1A1A;
+  --scrollbar-thumb: #333333;
+}
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--bg-base);
-  color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-base) !important;
+  color: var(--text-primary) !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+input, select, textarea {
+  color: var(--text-primary) !important;
+  background-color: var(--bg-input) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* date input calendar icon color */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: var(--calendar-icon-filter, none);
+  cursor: pointer;
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* select options */
+option {
+  background: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-surface); }
-::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #3A3A3A; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
-
-const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metadata: Metadata = {
   title: "Balaji Travels — Quote Builder",
@@ -11,9 +9,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col" style={{ background: 'var(--bg-base)', color: 'var(--text-primary)' }}>
-        {children}
+    <html lang="en">
+      <head>
+        {/* Prevent flash: set theme before React hydrates */}
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();`
+        }} />
+      </head>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
