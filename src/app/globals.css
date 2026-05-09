@@ -1,32 +1,28 @@
 @import "tailwindcss";
 
-/* ── Brand tokens (always the same) ── */
+/* ─── Brand tokens (never change) ─────────────────── */
 :root {
-  --saffron: #FF6B00;
+  --saffron:       #FF6B00;
   --saffron-light: #FF8C33;
-  --green-dark: #1A3A0A;
-  --green: #2D5016;
-  --gold: #C9A84C;
+  --green:         #2D5016;
+  --gold:          #C9A84C;
 }
 
-/* ── Light theme ── */
-[data-theme="light"] {
+/* ─── Light mode (default) ────────────────────────── */
+:root {
   --bg-base:     #F5F5F0;
   --bg-surface:  #FFFFFF;
-  --bg-elevated: #F0EFE9;
+  --bg-elevated: #EBEBE5;
   --bg-input:    #FFFFFF;
-  --bg-border:   #E2E0D8;
+  --bg-border:   #DDDDD5;
 
   --text-primary:   #1A1A1A;
   --text-secondary: #555550;
   --text-muted:     #999990;
-
-  --scrollbar-track: #EBEBEB;
-  --scrollbar-thumb: #D0CFC8;
 }
 
-/* ── Dark theme ── */
-[data-theme="dark"] {
+/* ─── Dark mode (.dark on <html>) ─────────────────── */
+html.dark {
   --bg-base:     #0E0E0E;
   --bg-surface:  #161616;
   --bg-elevated: #1F1F1F;
@@ -36,17 +32,13 @@
   --text-primary:   #F0F0F0;
   --text-secondary: #A0A0A0;
   --text-muted:     #606060;
-
-  --scrollbar-track: #1A1A1A;
-  --scrollbar-thumb: #333333;
 }
 
-/* ── Base ── */
-*, *::before, *::after { box-sizing: border-box; }
-
+/* ─── Base resets ─────────────────────────────────── */
 html, body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
 }
 
 body {
@@ -54,35 +46,33 @@ body {
   color: var(--text-primary) !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 input, select, textarea {
-  color: var(--text-primary) !important;
-  background-color: var(--bg-input) !important;
+  color: var(--text-primary);
+  background-color: var(--bg-input);
 }
 
 input::placeholder, textarea::placeholder {
-  color: var(--text-muted) !important;
+  color: var(--text-muted);
+  opacity: 1;
 }
 
-/* date input calendar icon color */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: var(--calendar-icon-filter, none);
+/* Date picker icon — invert in dark mode */
+html.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
   cursor: pointer;
 }
 
-[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-}
-
-/* select options */
+/* Select options */
 option {
-  background: var(--bg-elevated) !important;
-  color: var(--text-primary) !important;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar              { width: 5px; height: 5px; }
+::-webkit-scrollbar-track        { background: var(--bg-elevated); }
+::-webkit-scrollbar-thumb        { background: var(--bg-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--text-muted); }

@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Prevent flash: set theme before React hydrates */}
         <script dangerouslySetInnerHTML={{
-          __html: `(function(){var t=localStorage.getItem('bt-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();`
+          __html: `(function(){var t=localStorage.getItem('bt-theme')||'dark';if(t==='dark')document.documentElement.classList.add('dark');})();`
         }} />
       </head>
       <body>
