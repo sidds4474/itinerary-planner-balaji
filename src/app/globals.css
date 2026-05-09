@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+  --saffron: #FF6B00;
+  --saffron-light: #FF8C33;
+  --saffron-dark: #CC5500;
+  --green: #2D5016;
+  --green-light: #3D6B1F;
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --background: #FAFAF8;
+  --foreground: #1A1A1A;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
