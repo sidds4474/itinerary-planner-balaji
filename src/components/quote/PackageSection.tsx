@@ -7,163 +7,218 @@ interface Props {
   update: (patch: Partial<QuoteFormData>) => void;
 }
 
-const inputClass = "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white";
-const focusColor = "focus:ring-orange-400";
-const labelClass = "block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5";
+const inputStyle = {
+  background: 'var(--bg-input)',
+  border: '1px solid var(--bg-border)',
+  color: 'var(--text-primary)',
+  borderRadius: '8px',
+  padding: '10px 12px',
+  fontSize: '13px',
+  width: '100%',
+  outline: 'none',
+};
+
+const labelStyle = {
+  display: 'block',
+  fontSize: '11px',
+  fontWeight: '600',
+  color: 'var(--text-muted)',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.05em',
+  marginBottom: '6px',
+};
+
+const sectionStyle = {
+  background: 'var(--bg-surface)',
+  border: '1px solid var(--bg-border)',
+  borderRadius: '12px',
+  padding: '20px',
+  marginBottom: '16px',
+};
+
+const sectionHeadingStyle = {
+  fontSize: '13px',
+  fontWeight: '700',
+  color: 'var(--text-primary)',
+  marginBottom: '16px',
+  paddingBottom: '10px',
+  borderBottom: '1px solid var(--bg-border)',
+};
 
 const VEHICLES = ['Dzire', 'Innova', 'Innova Crysta', 'Tempo Traveller (12 Seater)', 'Tempo Traveller (17 Seater)', 'Bus', 'Other'];
 const MEAL_PLANS = ['Breakfast & Dinner', 'Breakfast Only', 'All Meals', 'No Meals'];
 
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label style={labelStyle}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
+function Input({ value, onChange, placeholder, type = 'text' }: {
+  value: string | number;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  type?: string;
+}) {
+  return (
+    <input
+      type={type}
+      style={inputStyle}
+      placeholder={placeholder}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      onFocus={e => { e.target.style.borderColor = 'var(--saffron)'; e.target.style.boxShadow = '0 0 0 2px rgba(255,107,0,0.15)'; }}
+      onBlur={e => { e.target.style.borderColor = 'var(--bg-border)'; e.target.style.boxShadow = 'none'; }}
+    />
+  );
+}
+
+function Select({ value, onChange, options, placeholder }: {
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  placeholder?: string;
+}) {
+  return (
+    <select
+      style={{ ...inputStyle, cursor: 'pointer' }}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      onFocus={e => { e.target.style.borderColor = 'var(--saffron)'; }}
+      onBlur={e => { e.target.style.borderColor = 'var(--bg-border)'; }}
+    >
+      {placeholder && <option value="">{placeholder}</option>}
+      {options.map(o => <option key={o} value={o} style={{ background: 'var(--bg-elevated)' }}>{o}</option>)}
+    </select>
+  );
+}
+
 export default function PackageSection({ form, update }: Props) {
   return (
-    <div className="space-y-8">
+    <div>
       {/* Client Info */}
-      <div>
-        <h2 className="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">Client Information</h2>
+      <div style={sectionStyle}>
+        <div style={sectionHeadingStyle}>Client Information</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className={labelClass}>Client Name *</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="e.g. Sharma Ji" value={form.clientName} onChange={e => update({ clientName: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Phone Number *</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="+91 98765 43210" value={form.clientPhone} onChange={e => update({ clientPhone: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Email</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="client@email.com" value={form.clientEmail} onChange={e => update({ clientEmail: e.target.value })} />
-          </div>
+          <Field label="Client Name *">
+            <Input value={form.clientName} onChange={v => update({ clientName: v })} placeholder="e.g. Sharma Ji" />
+          </Field>
+          <Field label="Phone Number *">
+            <Input value={form.clientPhone} onChange={v => update({ clientPhone: v })} placeholder="+91 98765 43210" />
+          </Field>
+          <Field label="Email">
+            <Input value={form.clientEmail} onChange={v => update({ clientEmail: v })} placeholder="client@email.com" type="email" />
+          </Field>
         </div>
       </div>
 
       {/* Package Details */}
-      <div>
-        <h2 className="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">Package Details</h2>
+      <div style={sectionStyle}>
+        <div style={sectionHeadingStyle}>Package Details</div>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Package Name *</label>
-              <input className={`${inputClass} ${focusColor}`} placeholder="e.g. Chardham Yatra 2026" value={form.packageName} onChange={e => update({ packageName: e.target.value })} />
-            </div>
-            <div>
-              <label className={labelClass}>Vehicle *</label>
-              <select className={`${inputClass} ${focusColor}`} value={form.vehicle} onChange={e => update({ vehicle: e.target.value })}>
-                <option value="">Select vehicle</option>
-                {VEHICLES.map(v => <option key={v} value={v}>{v}</option>)}
-              </select>
-            </div>
+            <Field label="Package Name *">
+              <Input value={form.packageName} onChange={v => update({ packageName: v })} placeholder="e.g. Chardham Yatra 2026" />
+            </Field>
+            <Field label="Vehicle *">
+              <Select value={form.vehicle} onChange={v => update({ vehicle: v })} options={VEHICLES} placeholder="Select vehicle" />
+            </Field>
           </div>
-
-          <div>
-            <label className={labelClass}>Full Route / Destination *</label>
-            <input
-              className={`${inputClass} ${focusColor}`}
-              placeholder="e.g. Haridwar – Barkot – Yamunotri – Uttarkashi – Gangotri – Guptkashi – Kedarnath – Badrinath – Haridwar"
+          <Field label="Full Route / Destination *">
+            <Input
               value={form.destination}
-              onChange={e => update({ destination: e.target.value })}
+              onChange={v => update({ destination: v })}
+              placeholder="e.g. Haridwar – Barkot – Yamunotri – Uttarkashi – Gangotri – Guptkashi – Kedarnath – Badrinath – Haridwar"
             />
-          </div>
+          </Field>
         </div>
       </div>
 
       {/* Group Composition */}
-      <div>
-        <h2 className="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">Group Composition</h2>
+      <div style={sectionStyle}>
+        <div style={sectionHeadingStyle}>Group Composition</div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Field label="Adults *">
+            <Input type="number" value={form.numAdults} onChange={v => update({ numAdults: parseInt(v) || 1 })} />
+          </Field>
           <div>
-            <label className={labelClass}>Adults *</label>
-            <input type="number" min={1} className={`${inputClass} ${focusColor}`} value={form.numAdults} onChange={e => update({ numAdults: parseInt(e.target.value) || 1 })} />
+            <Field label="Children (5+ yrs)">
+              <Input type="number" value={form.numChildren} onChange={v => update({ numChildren: parseInt(v) || 0 })} />
+            </Field>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Food charges only</p>
           </div>
           <div>
-            <label className={labelClass}>Children (5+ yrs)</label>
-            <input type="number" min={0} className={`${inputClass} ${focusColor}`} value={form.numChildren} onChange={e => update({ numChildren: parseInt(e.target.value) || 0 })} />
-            <p className="text-xs text-gray-400 mt-1">Food charges only</p>
+            <Field label="Infants (&lt;5 yrs)">
+              <Input type="number" value={form.numInfants} onChange={v => update({ numInfants: parseInt(v) || 0 })} />
+            </Field>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Complimentary</p>
           </div>
-          <div>
-            <label className={labelClass}>Infants (&lt;5 yrs)</label>
-            <input type="number" min={0} className={`${inputClass} ${focusColor}`} value={form.numInfants} onChange={e => update({ numInfants: parseInt(e.target.value) || 0 })} />
-            <p className="text-xs text-gray-400 mt-1">Complimentary</p>
-          </div>
-          <div>
-            <label className={labelClass}>Room Config *</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="e.g. 01 Room Triple Sharing" value={form.roomConfig} onChange={e => update({ roomConfig: e.target.value })} />
-          </div>
+          <Field label="Room Config *">
+            <Input value={form.roomConfig} onChange={v => update({ roomConfig: v })} placeholder="01 Room Triple Sharing" />
+          </Field>
         </div>
       </div>
 
       {/* Travel Details */}
-      <div>
-        <h2 className="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">Travel Details</h2>
+      <div style={sectionStyle}>
+        <div style={sectionHeadingStyle}>Travel Details</div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <label className={labelClass}>Travel Date *</label>
-            <input type="date" className={`${inputClass} ${focusColor}`} value={form.travelDate} onChange={e => update({ travelDate: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Nights</label>
-            <input type="number" min={1} className={`${inputClass} ${focusColor}`} value={form.durationNights} onChange={e => { const n = parseInt(e.target.value) || 1; update({ durationNights: n, durationDays: n + 1 }); }} />
-          </div>
-          <div>
-            <label className={labelClass}>Days</label>
-            <input type="number" min={1} className={`${inputClass} ${focusColor}`} value={form.durationDays} onChange={e => update({ durationDays: parseInt(e.target.value) || 1 })} />
-          </div>
-          <div>
-            <label className={labelClass}>Meal Plan</label>
-            <select className={`${inputClass} ${focusColor}`} value={form.mealPlan} onChange={e => update({ mealPlan: e.target.value })}>
-              {MEAL_PLANS.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-          </div>
+          <Field label="Travel Date *">
+            <Input type="date" value={form.travelDate} onChange={v => update({ travelDate: v })} />
+          </Field>
+          <Field label="Nights">
+            <Input type="number" value={form.durationNights} onChange={v => { const n = parseInt(v) || 1; update({ durationNights: n, durationDays: n + 1 }); }} />
+          </Field>
+          <Field label="Days">
+            <Input type="number" value={form.durationDays} onChange={v => update({ durationDays: parseInt(v) || 1 })} />
+          </Field>
+          <Field label="Meal Plan">
+            <Select value={form.mealPlan} onChange={v => update({ mealPlan: v })} options={MEAL_PLANS} />
+          </Field>
         </div>
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <div>
-            <label className={labelClass}>Pickup Point *</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="e.g. Haridwar Station" value={form.pickupPoint} onChange={e => update({ pickupPoint: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Dropping Point *</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="e.g. Haridwar Station" value={form.droppingPoint} onChange={e => update({ droppingPoint: e.target.value })} />
-          </div>
+          <Field label="Pickup Point *">
+            <Input value={form.pickupPoint} onChange={v => update({ pickupPoint: v })} placeholder="e.g. Haridwar Station" />
+          </Field>
+          <Field label="Dropping Point *">
+            <Input value={form.droppingPoint} onChange={v => update({ droppingPoint: v })} placeholder="e.g. Haridwar Station" />
+          </Field>
         </div>
       </div>
 
-      {/* Agent Info */}
-      <div>
-        <h2 className="text-base font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">Agent & Payment Details</h2>
+      {/* Agent & Payment */}
+      <div style={sectionStyle}>
+        <div style={sectionHeadingStyle}>Agent & Payment Details</div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className={labelClass}>Your Name</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="Agent name" value={form.agentName} onChange={e => update({ agentName: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Your Title</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="e.g. Travel Consultant" value={form.agentTitle} onChange={e => update({ agentTitle: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Your Phone</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="+91 xxxxx xxxxx" value={form.agentPhone} onChange={e => update({ agentPhone: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Your Email</label>
-            <input className={`${inputClass} ${focusColor}`} placeholder="you@balajitravels.site" value={form.agentEmail} onChange={e => update({ agentEmail: e.target.value })} />
-          </div>
+          <Field label="Your Name">
+            <Input value={form.agentName} onChange={v => update({ agentName: v })} placeholder="Agent name" />
+          </Field>
+          <Field label="Your Title">
+            <Input value={form.agentTitle} onChange={v => update({ agentTitle: v })} placeholder="e.g. Travel Consultant" />
+          </Field>
+          <Field label="Your Phone">
+            <Input value={form.agentPhone} onChange={v => update({ agentPhone: v })} placeholder="+91 xxxxx xxxxx" />
+          </Field>
+          <Field label="Your Email">
+            <Input value={form.agentEmail} onChange={v => update({ agentEmail: v })} placeholder="you@balajitravels.site" type="email" />
+          </Field>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-          <div>
-            <label className={labelClass}>Account Name</label>
-            <input className={`${inputClass} ${focusColor}`} value={form.bankName} onChange={e => update({ bankName: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>Account Number</label>
-            <input className={`${inputClass} ${focusColor}`} value={form.accountNumber} onChange={e => update({ accountNumber: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>IFSC Code</label>
-            <input className={`${inputClass} ${focusColor}`} value={form.ifscCode} onChange={e => update({ ifscCode: e.target.value })} />
-          </div>
-          <div>
-            <label className={labelClass}>UPI ID</label>
-            <input className={`${inputClass} ${focusColor}`} value={form.upiId} onChange={e => update({ upiId: e.target.value })} />
-          </div>
+          <Field label="Account Name">
+            <Input value={form.bankName} onChange={v => update({ bankName: v })} />
+          </Field>
+          <Field label="Account Number">
+            <Input value={form.accountNumber} onChange={v => update({ accountNumber: v })} />
+          </Field>
+          <Field label="IFSC Code">
+            <Input value={form.ifscCode} onChange={v => update({ ifscCode: v })} />
+          </Field>
+          <Field label="UPI ID">
+            <Input value={form.upiId} onChange={v => update({ upiId: v })} />
+          </Field>
         </div>
       </div>
     </div>

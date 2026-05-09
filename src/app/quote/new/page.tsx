@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { QuoteFormData, HotelOption, DayItinerary, DEFAULT_INCLUSIONS, DEFAULT_EXCLUSIONS } from '@/types/quote';
+import { QuoteFormData, DEFAULT_INCLUSIONS, DEFAULT_EXCLUSIONS } from '@/types/quote';
 import PackageSection from '@/components/quote/PackageSection';
 import HotelOptionsSection from '@/components/quote/HotelOptionsSection';
 import ItinerarySection from '@/components/quote/ItinerarySection';
@@ -74,31 +74,36 @@ export default function NewQuotePage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+    <div className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
       {/* Header */}
-      <header style={{ background: 'var(--green)' }} className="px-6 py-4 flex items-center justify-between">
+      <header style={{ background: 'var(--bg-surface)', borderBottom: '1px solid var(--bg-border)' }} className="px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--saffron)' }}>
             <span className="text-white text-sm font-bold">B</span>
           </div>
-          <span className="text-white font-semibold text-lg">Balaji Travels — Quote Builder</span>
+          <div>
+            <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Balaji Travels</span>
+            <span className="text-xs ml-2" style={{ color: 'var(--text-muted)' }}>Quote Builder</span>
+          </div>
         </div>
-        <span className="text-white/60 text-sm">Step {step + 1} of {STEPS.length}</span>
+        <span className="text-xs px-2.5 py-1 rounded-full" style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)' }}>
+          Step {step + 1} / {STEPS.length}
+        </span>
       </header>
 
       {/* Step tabs */}
-      <div style={{ background: 'var(--green-light)' }} className="px-6 py-0 flex gap-0 overflow-x-auto">
+      <div style={{ background: 'var(--bg-surface)', borderBottom: '1px solid var(--bg-border)' }} className="px-4 flex gap-0 overflow-x-auto">
         {STEPS.map((s, i) => (
           <button
             key={i}
             onClick={() => setStep(i)}
-            className="px-4 py-3 text-sm font-medium whitespace-nowrap transition-all border-b-2"
+            className="px-4 py-3 text-xs font-medium whitespace-nowrap transition-all border-b-2"
             style={{
-              borderBottomColor: step === i ? 'var(--gold)' : 'transparent',
-              color: step === i ? 'var(--gold)' : 'rgba(255,255,255,0.7)',
+              borderBottomColor: step === i ? 'var(--saffron)' : 'transparent',
+              color: step === i ? 'var(--saffron)' : 'var(--text-muted)',
             }}
           >
-            {s}
+            {i < step ? '✓ ' : ''}{s}
           </button>
         ))}
       </div>
@@ -119,18 +124,19 @@ export default function NewQuotePage() {
         )}
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+        <div className="flex justify-between mt-10 pt-6" style={{ borderTop: '1px solid var(--bg-border)' }}>
           <button
             onClick={() => setStep(s => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="px-6 py-2.5 rounded-lg text-sm font-medium border border-gray-300 text-gray-600 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+            className="px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-30"
+            style={{ background: 'var(--bg-elevated)', color: 'var(--text-secondary)', border: '1px solid var(--bg-border)' }}
           >
             ← Back
           </button>
           {step < STEPS.length - 1 ? (
             <button
               onClick={() => setStep(s => Math.min(STEPS.length - 1, s + 1))}
-              className="px-6 py-2.5 rounded-lg text-sm font-medium text-white transition-colors"
+              className="px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition-all"
               style={{ background: 'var(--saffron)' }}
             >
               Next →
@@ -139,10 +145,10 @@ export default function NewQuotePage() {
             <button
               onClick={handleGenerate}
               disabled={generating}
-              className="px-8 py-2.5 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-60"
+              className="px-8 py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:opacity-50"
               style={{ background: 'var(--saffron)' }}
             >
-              {generating ? 'Generating PDF...' : 'Generate Quote PDF'}
+              {generating ? 'Generating...' : 'Generate PDF'}
             </button>
           )}
         </div>

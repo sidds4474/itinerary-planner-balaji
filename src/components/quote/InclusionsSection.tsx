@@ -7,61 +7,91 @@ interface Props {
   update: (patch: Partial<QuoteFormData>) => void;
 }
 
-const inputClass = "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white";
+const inputStyle = {
+  background: 'var(--bg-input)',
+  border: '1px solid var(--bg-border)',
+  color: 'var(--text-primary)',
+  borderRadius: '8px',
+  padding: '8px 12px',
+  fontSize: '13px',
+  width: '100%',
+  outline: 'none',
+};
 
-function ListEditor({ items, onChange, addLabel }: { items: string[]; onChange: (items: string[]) => void; addLabel: string }) {
+function ListEditor({ items, onChange, addLabel, accentColor }: {
+  items: string[];
+  onChange: (items: string[]) => void;
+  addLabel: string;
+  accentColor: string;
+}) {
   const update = (i: number, val: string) => onChange(items.map((item, idx) => idx === i ? val : item));
   const remove = (i: number) => onChange(items.filter((_, idx) => idx !== i));
   const add = () => onChange([...items, '']);
 
   return (
-    <div className="space-y-2">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {items.map((item, i) => (
-        <div key={i} className="flex gap-2 items-start">
-          <span className="text-gray-400 mt-2.5 text-sm">Ø</span>
+        <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{ color: accentColor, fontSize: '13px', flexShrink: 0, width: '16px' }}>Ø</span>
           <input
-            className={inputClass}
+            style={inputStyle}
             value={item}
             onChange={e => update(i, e.target.value)}
+            onFocus={e => e.target.style.borderColor = 'var(--saffron)'}
+            onBlur={e => e.target.style.borderColor = 'var(--bg-border)'}
           />
-          <button onClick={() => remove(i)} className="mt-2 text-gray-300 hover:text-red-400 text-lg leading-none flex-shrink-0">×</button>
+          <button
+            onClick={() => remove(i)}
+            style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: 1, flexShrink: 0 }}
+          >×</button>
         </div>
       ))}
-      <button onClick={add} className="text-xs font-medium mt-1" style={{ color: 'var(--saffron)' }}>+ {addLabel}</button>
+      <button
+        onClick={add}
+        style={{ fontSize: '12px', color: accentColor, background: 'none', border: 'none', cursor: 'pointer', fontWeight: '500', textAlign: 'left', marginTop: '4px' }}
+      >
+        + {addLabel}
+      </button>
     </div>
   );
 }
 
 export default function InclusionsSection({ form, update }: Props) {
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-base font-bold text-gray-800 mb-1">Inclusions & Exclusions</h2>
-        <p className="text-xs text-gray-500">Pre-filled with standard text. Edit as needed for this quote.</p>
+    <div>
+      <div style={{ marginBottom: '20px' }}>
+        <h2 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text-primary)' }}>Inclusions & Exclusions</h2>
+        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>Pre-filled with standard boilerplate. Edit as needed for this quote.</p>
       </div>
 
-      <div>
-        <h3 className="text-sm font-bold text-green-800 mb-3 flex items-center gap-2">
-          <span className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-xs">✓</span>
-          Inclusions
-        </h3>
-        <ListEditor
-          items={form.inclusions}
-          onChange={inclusions => update({ inclusions })}
-          addLabel="Add inclusion"
-        />
-      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+        <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--bg-border)', background: 'rgba(45, 80, 22, 0.2)' }}>
+            <span style={{ fontSize: '12px', fontWeight: '700', color: '#6BBF45' }}>✓ Inclusions</span>
+          </div>
+          <div style={{ padding: '16px' }}>
+            <ListEditor
+              items={form.inclusions}
+              onChange={inclusions => update({ inclusions })}
+              addLabel="Add inclusion"
+              accentColor="#6BBF45"
+            />
+          </div>
+        </div>
 
-      <div>
-        <h3 className="text-sm font-bold text-red-800 mb-3 flex items-center gap-2">
-          <span className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center text-red-700 text-xs">✕</span>
-          Exclusions
-        </h3>
-        <ListEditor
-          items={form.exclusions}
-          onChange={exclusions => update({ exclusions })}
-          addLabel="Add exclusion"
-        />
+        <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--bg-border)', background: 'rgba(180, 40, 40, 0.15)' }}>
+            <span style={{ fontSize: '12px', fontWeight: '700', color: '#E06060' }}>✕ Exclusions</span>
+          </div>
+          <div style={{ padding: '16px' }}>
+            <ListEditor
+              items={form.exclusions}
+              onChange={exclusions => update({ exclusions })}
+              addLabel="Add exclusion"
+              accentColor="#E06060"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

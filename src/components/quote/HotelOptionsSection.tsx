@@ -8,11 +8,20 @@ interface Props {
 }
 
 const TIERS: HotelTier[] = ['Standard', 'Deluxe', 'Luxury', 'Super Luxury'];
-const inputClass = "border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white";
+
+const inputStyle = {
+  background: 'var(--bg-input)',
+  border: '1px solid var(--bg-border)',
+  color: 'var(--text-primary)',
+  borderRadius: '8px',
+  padding: '8px 10px',
+  fontSize: '12px',
+  width: '100%',
+  outline: 'none',
+};
 
 export default function HotelOptionsSection({ form, update }: Props) {
   const options = form.hotelOptions;
-
   const setOptions = (opts: HotelOption[]) => update({ hotelOptions: opts });
 
   const addOption = () => {
@@ -20,16 +29,15 @@ export default function HotelOptionsSection({ form, update }: Props) {
     const tiers: HotelTier[] = ['Standard', 'Deluxe', 'Luxury'];
     setOptions([...options, {
       tier: tiers[options.length] || 'Luxury',
-      hotels: [{ days: 'Day 01', destination: '', hotel: '' }],
+      hotels: options[0]?.hotels.map(s => ({ ...s, hotel: '' })) || [{ days: 'Day 01', destination: '', hotel: '' }],
       totalCost: 0,
     }]);
   };
 
   const removeOption = (i: number) => setOptions(options.filter((_, idx) => idx !== i));
 
-  const updateOption = (i: number, patch: Partial<HotelOption>) => {
+  const updateOption = (i: number, patch: Partial<HotelOption>) =>
     setOptions(options.map((o, idx) => idx === i ? { ...o, ...patch } : o));
-  };
 
   const updateStop = (optIdx: number, stopIdx: number, patch: Partial<HotelStop>) => {
     const newStops = options[optIdx].hotels.map((s, i) => i === stopIdx ? { ...s, ...patch } : s);
@@ -37,129 +45,122 @@ export default function HotelOptionsSection({ form, update }: Props) {
   };
 
   const addStop = (optIdx: number) => {
-    const stops = options[optIdx].hotels;
-    updateOption(optIdx, { hotels: [...stops, { days: '', destination: '', hotel: '' }] });
+    updateOption(optIdx, { hotels: [...options[optIdx].hotels, { days: '', destination: '', hotel: '' }] });
   };
 
   const removeStop = (optIdx: number, stopIdx: number) => {
-    const stops = options[optIdx].hotels.filter((_, i) => i !== stopIdx);
-    updateOption(optIdx, { hotels: stops });
-  };
-
-  const copyStopsToAll = (fromIdx: number) => {
-    const sourceStops = options[fromIdx].hotels;
-    setOptions(options.map((o, i) => i === fromIdx ? o : {
-      ...o,
-      hotels: sourceStops.map(s => ({ ...s, hotel: '' })),
-    }));
+    updateOption(optIdx, { hotels: options[optIdx].hotels.filter((_, i) => i !== stopIdx) });
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className="text-base font-bold text-gray-800">Hotel Options</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Add up to 3 pricing tiers (Standard / Deluxe / Luxury)</p>
+          <h2 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text-primary)' }}>Hotel Options</h2>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>Add up to 3 tiers — each gets its own price in the PDF</p>
         </div>
         {options.length < 3 && (
-          <button onClick={addOption} className="px-4 py-2 text-sm font-medium text-white rounded-lg" style={{ background: 'var(--saffron)' }}>
+          <button
+            onClick={addOption}
+            style={{ background: 'var(--saffron)', color: 'white', border: 'none', borderRadius: '8px', padding: '8px 16px', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}
+          >
             + Add Option
           </button>
         )}
       </div>
 
       {/* Pricing mode */}
-      <div className="flex gap-4 items-center">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Show price as:</span>
+      <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '10px', padding: '14px 16px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Price display:</span>
         {(['total', 'per_person'] as const).map(mode => (
-          <label key={mode} className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="pricingMode" value={mode} checked={form.pricingMode === mode} onChange={() => update({ pricingMode: mode })} className="accent-orange-500" />
-            <span className="text-sm text-gray-700">{mode === 'total' ? 'Total Package Cost' : 'Per Person Cost'}</span>
+          <label key={mode} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+            <input
+              type="radio"
+              name="pricingMode"
+              value={mode}
+              checked={form.pricingMode === mode}
+              onChange={() => update({ pricingMode: mode })}
+              style={{ accentColor: 'var(--saffron)' }}
+            />
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+              {mode === 'total' ? 'Total Package Cost' : 'Per Person Cost'}
+            </span>
           </label>
         ))}
       </div>
 
+      {/* Options */}
       {options.map((opt, optIdx) => (
-        <div key={optIdx} className="border border-gray-200 rounded-xl overflow-hidden">
+        <div key={optIdx} style={{ background: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' }}>
           {/* Option header */}
-          <div className="flex items-center justify-between px-4 py-3" style={{ background: 'var(--green)', color: 'white' }}>
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold">Option {optIdx + 1}</span>
+          <div style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--bg-border)', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--saffron)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Option {optIdx + 1}
+              </span>
               <select
-                className="text-sm rounded px-2 py-1 text-gray-800 bg-white border-0"
+                style={{ background: 'var(--bg-input)', border: '1px solid var(--bg-border)', color: 'var(--text-primary)', borderRadius: '6px', padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}
                 value={opt.tier}
                 onChange={e => updateOption(optIdx, { tier: e.target.value as HotelTier })}
               >
-                {TIERS.map(t => <option key={t} value={t}>{t}</option>)}
+                {TIERS.map(t => <option key={t} value={t} style={{ background: 'var(--bg-elevated)' }}>{t}</option>)}
               </select>
-              <span className="text-xs opacity-70">Hotels</span>
             </div>
-            <div className="flex items-center gap-3">
-              {optIdx === 0 && options.length > 1 && (
-                <button onClick={() => copyStopsToAll(0)} className="text-xs opacity-80 hover:opacity-100 underline">
-                  Copy stops to other options
-                </button>
-              )}
-              {options.length > 1 && (
-                <button onClick={() => removeOption(optIdx)} className="text-xs opacity-70 hover:opacity-100">✕ Remove</button>
-              )}
-            </div>
+            {options.length > 1 && (
+              <button
+                onClick={() => removeOption(optIdx)}
+                style={{ fontSize: '12px', color: 'var(--text-muted)', cursor: 'pointer', background: 'none', border: 'none' }}
+              >
+                Remove
+              </button>
+            )}
           </div>
 
-          {/* Hotel stops table */}
-          <div className="p-4 space-y-2">
-            <div className="grid grid-cols-12 gap-2 mb-1">
-              <span className="col-span-3 text-xs font-semibold text-gray-400 uppercase">Days</span>
-              <span className="col-span-4 text-xs font-semibold text-gray-400 uppercase">Destination</span>
-              <span className="col-span-4 text-xs font-semibold text-gray-400 uppercase">Hotel / Accommodation</span>
+          {/* Table */}
+          <div style={{ padding: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr 1.6fr 24px', gap: '8px', marginBottom: '8px' }}>
+              {['Days', 'Destination', 'Hotel / Accommodation', ''].map(h => (
+                <span key={h} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</span>
+              ))}
             </div>
             {opt.hotels.map((stop, stopIdx) => (
-              <div key={stopIdx} className="grid grid-cols-12 gap-2 items-center">
-                <input
-                  className={`${inputClass} col-span-3`}
-                  placeholder="Day 01"
-                  value={stop.days}
-                  onChange={e => updateStop(optIdx, stopIdx, { days: e.target.value })}
-                />
-                <input
-                  className={`${inputClass} col-span-4`}
-                  placeholder="e.g. Barkot"
-                  value={stop.destination}
-                  onChange={e => updateStop(optIdx, stopIdx, { destination: e.target.value })}
-                />
-                <input
-                  className={`${inputClass} col-span-4`}
-                  placeholder="e.g. Hotel Trishul"
-                  value={stop.hotel}
-                  onChange={e => updateStop(optIdx, stopIdx, { hotel: e.target.value })}
-                />
-                {opt.hotels.length > 1 && (
-                  <button onClick={() => removeStop(optIdx, stopIdx)} className="col-span-1 text-gray-400 hover:text-red-500 text-lg leading-none">×</button>
-                )}
+              <div key={stopIdx} style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr 1.6fr 24px', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
+                <input style={inputStyle} placeholder="Day 01" value={stop.days} onChange={e => updateStop(optIdx, stopIdx, { days: e.target.value })} onFocus={e => e.target.style.borderColor = 'var(--saffron)'} onBlur={e => e.target.style.borderColor = 'var(--bg-border)'} />
+                <input style={inputStyle} placeholder="e.g. Barkot" value={stop.destination} onChange={e => updateStop(optIdx, stopIdx, { destination: e.target.value })} onFocus={e => e.target.style.borderColor = 'var(--saffron)'} onBlur={e => e.target.style.borderColor = 'var(--bg-border)'} />
+                <input style={inputStyle} placeholder="e.g. Hotel Trishul" value={stop.hotel} onChange={e => updateStop(optIdx, stopIdx, { hotel: e.target.value })} onFocus={e => e.target.style.borderColor = 'var(--saffron)'} onBlur={e => e.target.style.borderColor = 'var(--bg-border)'} />
+                {opt.hotels.length > 1 ? (
+                  <button onClick={() => removeStop(optIdx, stopIdx)} style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1 }}>×</button>
+                ) : <span />}
               </div>
             ))}
-            <button onClick={() => addStop(optIdx)} className="text-xs text-orange-600 hover:text-orange-700 font-medium mt-1">
+            <button
+              onClick={() => addStop(optIdx)}
+              style={{ fontSize: '12px', color: 'var(--saffron)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: '500', padding: '4px 0' }}
+            >
               + Add stop
             </button>
           </div>
 
-          {/* Total cost */}
-          <div className="px-4 pb-4 flex items-center gap-3">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
-              {form.pricingMode === 'total' ? 'Total Package Cost (₹)' : 'Per Person Cost (₹)'}
-            </label>
-            <div className="flex items-center gap-1">
-              <span className="text-gray-500 text-sm">₹</span>
+          {/* Price */}
+          <div style={{ padding: '12px 16px', borderTop: '1px solid var(--bg-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+              {form.pricingMode === 'total' ? 'Total Cost (₹)' : 'Per Person (₹)'}
+            </span>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <span style={{ position: 'absolute', left: '10px', color: 'var(--text-muted)', fontSize: '13px' }}>₹</span>
               <input
                 type="number"
-                className={`${inputClass} w-40`}
+                style={{ ...inputStyle, paddingLeft: '24px', width: '160px' }}
                 placeholder="0"
                 value={opt.totalCost || ''}
                 onChange={e => updateOption(optIdx, { totalCost: parseFloat(e.target.value) || 0 })}
+                onFocus={e => e.target.style.borderColor = 'var(--saffron)'}
+                onBlur={e => e.target.style.borderColor = 'var(--bg-border)'}
               />
             </div>
             {opt.totalCost > 0 && (
-              <span className="text-sm font-bold" style={{ color: 'var(--saffron)' }}>
+              <span style={{ fontSize: '15px', fontWeight: '700', color: 'var(--saffron)' }}>
                 ₹{opt.totalCost.toLocaleString('en-IN')}/-
               </span>
             )}
