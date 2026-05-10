@@ -1,6 +1,7 @@
 'use client';
 
 import { QuoteFormData } from '@/types/quote';
+import { ROUTE_TEMPLATES } from '@/data/routeTemplates';
 
 interface Props {
   form: QuoteFormData;
@@ -96,6 +97,21 @@ function Select({ value, onChange, options, placeholder }: {
   );
 }
 
+function applyTemplate(id: string, update: (patch: Partial<QuoteFormData>) => void) {
+  const t = ROUTE_TEMPLATES.find(r => r.id === id);
+  if (!t) return;
+  update({
+    packageName: t.packageName,
+    destination: t.destination,
+    durationNights: t.durationNights,
+    durationDays: t.durationDays,
+    pickupPoint: t.pickupPoint,
+    droppingPoint: t.droppingPoint,
+    hotelOptions: t.hotelOptions.map(o => ({ ...o, hotels: o.hotels.map(h => ({ ...h })) })),
+    dayItinerary: t.dayItinerary.map(d => ({ ...d })),
+  });
+}
+
 export default function PackageSection({ form, update }: Props) {
   return (
     <div>
@@ -119,6 +135,24 @@ export default function PackageSection({ form, update }: Props) {
       <div style={sectionStyle}>
         <div style={sectionHeadingStyle}>Package Details</div>
         <div className="space-y-4">
+          {/* Route Template Selector */}
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--bg-border)', borderRadius: '8px', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Quick Fill Route →</span>
+            <select
+              defaultValue=""
+              onChange={e => { if (e.target.value) applyTemplate(e.target.value, update); e.target.value = ''; }}
+              style={{ ...inputStyle, flex: 1, minWidth: '200px', cursor: 'pointer', fontWeight: '500', color: 'var(--saffron)' }}
+              onFocus={e => { e.target.style.borderColor = 'var(--saffron)'; }}
+              onBlur={e => { e.target.style.borderColor = 'var(--bg-border)'; }}
+            >
+              <option value="">Select a route to auto-fill Steps 2 & 3…</option>
+              {ROUTE_TEMPLATES.map(t => (
+                <option key={t.id} value={t.id} style={{ background: 'var(--bg-elevated)', color: 'var(--text-primary)', fontWeight: 'normal' }}>{t.label}</option>
+              ))}
+            </select>
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Hotels & itinerary auto-populated. You can still edit.</span>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Package Name *">
               <Input value={form.packageName} onChange={v => update({ packageName: v })} placeholder="e.g. Chardham Yatra 2026" />
