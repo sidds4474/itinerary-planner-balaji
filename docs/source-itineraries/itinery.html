@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chardham Yatra – Balaji Travels</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #f0ece4;
+      font-family: 'Inter', Arial, sans-serif;
+      color: #2c2c2c;
+      padding: 30px 15px;
+    }
+
+    .email-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.13);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #3b3020 50%, #7a6430 100%);
+      padding: 40px 30px 32px;
+      text-align: center;
+      position: relative;
+    }
+    .header::after {
+      content: '';
+      display: block;
+      height: 4px;
+      background: linear-gradient(90deg, #d4a017, #f5c842, #d4a017);
+      margin-top: 24px;
+    }
+    .header-icon { font-size: 38px; margin-bottom: 8px; }
+    .header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 30px;
+      color: #f5c842;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .header p {
+      color: #e8d9b0;
+      font-size: 13.5px;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    /* ── GREETING ── */
+    .greeting {
+      padding: 28px 32px 10px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #333;
+    }
+    .greeting b { color: #1a3a4a; }
+    .greeting .intro-tag {
+      display: inline-block;
+      background: #fff8e6;
+      border-left: 4px solid #d4a017;
+      padding: 10px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0 6px;
+      font-size: 14px;
+      color: #7a5c00;
+    }
+
+    /* ── SECTION CARD ── */
+    .card {
+      margin: 18px 24px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #ece8df;
+    }
+    .card-header {
+      padding: 14px 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .card-body { padding: 18px 22px; font-size: 14px; line-height: 2; }
+
+    /* Package overview */
+    .pkg-header { background: linear-gradient(90deg, #2c4a5e, #1a3a4a); color: #f5c842; }
+    .pkg-body { background: #f7fbff; }
+    .pkg-body table { width: 100%; border-collapse: collapse; }
+    .pkg-body td { padding: 5px 4px; vertical-align: top; }
+    .pkg-body td:first-child { width: 32px; font-size: 16px; }
+    .pkg-body td b { color: #1a3a4a; }
+    .cost-row {
+      background: linear-gradient(90deg, #1a3a4a, #2c5364);
+      color: white;
+      padding: 14px 22px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .cost-row span { color: #f5c842; font-size: 22px; }
+
+    /* Hotels */
+    .hotel-header { background: #fdf6ec; color: #7a5c00; border-bottom: 2px solid #e8c96e; }
+    .hotel-body { background: #fffdf6; }
+    .hotel-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px dashed #e8d9b0;
+      font-size: 14px;
+    }
+    .hotel-item:last-child { border-bottom: none; }
+    .hotel-dot {
+      width: 8px; height: 8px;
+      background: #d4a017;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Itinerary */
+    .itin-header { background: linear-gradient(90deg, #1a3a4a, #24536b); color: #f5c842; }
+    .itin-body { background: #f9fbff; padding: 10px 22px; }
+    .day-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 9px 0;
+      border-bottom: 1px solid #e8edf2;
+      font-size: 14px;
+    }
+    .day-row:last-child { border-bottom: none; }
+    .day-badge {
+      background: #1a3a4a;
+      color: #f5c842;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .day-desc { color: #333; line-height: 1.5; }
+
+    /* Inclusions / Exclusions */
+    .inc-header { background: #f0fff4; color: #2e7d32; border-bottom: 2px solid #81c784; }
+    .exc-header { background: #fff5f5; color: #c62828; border-bottom: 2px solid #ef9a9a; }
+    .inc-body { background: #f9fffa; }
+    .exc-body { background: #fffafa; }
+
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 5px 0;
+      font-size: 14px;
+    }
+    .check-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+    /* Payment */
+    .pay-header { background: linear-gradient(90deg, #3b3020, #5a4a20); color: #f5c842; }
+    .pay-body { background: #fffdf5; }
+    .pay-table { width: 100%; border-collapse: collapse; }
+    .pay-table tr td { padding: 7px 6px; font-size: 14px; border-bottom: 1px solid #f0e8d0; }
+    .pay-table tr:last-child td { border-bottom: none; }
+    .pay-table td:first-child { color: #7a5c00; font-weight: 600; width: 110px; }
+    .pay-table td:last-child { color: #222; font-family: 'Courier New', monospace; font-size: 13px; }
+
+    /* Footer */
+    .footer {
+      background: linear-gradient(135deg, #1a3a4a 0%, #0f2535 100%);
+      padding: 30px;
+      text-align: center;
+      color: #cde0ee;
+    }
+    .footer h3 {
+      font-family: 'Playfair Display', serif;
+      color: #f5c842;
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+    .contact-row {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .contact-item { font-size: 14px; }
+    .contact-item span { display: block; color: #8ab8d0; font-size: 11px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .contact-item a { color: #fff; text-decoration: none; font-weight: 500; }
+    .email-link { color: #f5c842 !important; font-size: 13px; margin-top: 4px; display: block; }
+    .mahadev {
+      margin-top: 16px;
+      font-size: 15px;
+      color: #d4a017;
+      letter-spacing: 1px;
+    }
+    .gold-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4a017, transparent);
+      margin: 0 24px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="email-wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-icon">🌄</div>
+    <h1>BALAJI TRAVELS</h1>
+    <p>Crafting Divine Journeys with Comfort &amp; Care</p>
+  </div>
+
+  <!-- GREETING -->
+  <div class="greeting">
+    <p>Dear <b>Mr. Dinesh Gupta</b>,</p>
+    <div class="intro-tag">
+      🌸 &nbsp;<b>Greetings from Balaji Travels! For Happy Memories…!!!</b> &nbsp;🌸
+    </div>
+    <p style="margin-top:10px;">We are delighted to present your <b>exclusive Chardham Yatra itinerary</b>, thoughtfully crafted for a smooth, comfortable, and spiritually enriching experience.</p>
+  </div>
+
+  <!-- PACKAGE OVERVIEW -->
+  <div class="card">
+    <div class="card-header pkg-header">🏔️ &nbsp;Package Overview</div>
+    <div class="card-body pkg-body">
+      <table>
+        <tr><td>✨</td><td><b>Package Name:</b> Chardham Yatra</td></tr>
+        <tr><td>📍</td><td><b>Route:</b> Dehradun – Barkot – Yamunotri – Uttarkashi – Gangotri – Guptkashi – Kedarnath – Badrinath – Rudraprayag – Dehradun</td></tr>
+        <tr><td>👨‍👩‍👧‍👦</td><td><b>Guests:</b> 11 Adults</td></tr>
+        <tr><td>🏨</td><td><b>Rooms:</b> 03 Triple Sharing + 01 Double Room</td></tr>
+        <tr><td>📅</td><td><b>Travel Date:</b> 25th May</td></tr>
+        <tr><td>🌙</td><td><b>Duration:</b> 09 Nights / 10 Days</td></tr>
+        <tr><td>🚐</td><td><b>Vehicle:</b> 12-Seater Tempo Traveller</td></tr>
+        <tr><td>🍽️</td><td><b>Meals:</b> Breakfast &amp; Dinner (Daily)</td></tr>
+      </table>
+    </div>
+    <div class="cost-row">💎 &nbsp;Package Cost: &nbsp;<span>₹2,75,000 /-</span></div>
+  </div>
+
+  <div class="gold-divider"></div>
+
+  <!-- HOTELS -->
+  <div class="card">
+    <div class="card-header hotel-header">🏨 &nbsp;Hotel Accommodations</div>
+    <div class="card-body hotel-body" style="padding-top:14px; padding-bottom:14px;">
+      <div class="hotel-item"><div class="hotel-dot"></div><span><b>Barkot / Jankichatti</b> — Standard</span></div>
+      <div class="hotel-item"><div class="hotel-dot"></div><span><b>Uttarkashi</b> — Basic</span></div>
+      <div class="hotel-item"><div class="hotel-dot"></div><span><b>Phata</b> — Standard</span></div>
+      <div class="hotel-item"><div class="hotel-dot"></div><span><b>Kedarnath</b> — Ashram Stay</span></div>
+      <div class="hotel-item"><div class="hotel-dot"></div><span><b>Badrinath</b> — Standard</span></div>
+      <div class="hotel-item"><div class="hotel-dot"></div><span><b>Rudraprayag</b> — Standard</span></div>
+    </div>
+  </div>
+
+  <!-- ITINERARY -->
+  <div class="card">
+    <div class="card-header itin-header">🗓️ &nbsp;Day-Wise Itinerary</div>
+    <div class="itin-body">
+      <div class="day-row"><span class="day-badge">Day 01</span><span class="day-desc">Dehradun → Barkot &nbsp;|&nbsp; Visit Kempty Falls &nbsp;|&nbsp; Overnight Stay</span></div>
+      <div class="day-row"><span class="day-badge">Day 02</span><span class="day-desc">Yamunotri Darshan &nbsp;|&nbsp; Trek + Holy Kund Experience</span></div>
+      <div class="day-row"><span class="day-badge">Day 03</span><span class="day-desc">Drive to Uttarkashi &nbsp;|&nbsp; Vishwanath Temple Darshan</span></div>
+      <div class="day-row"><span class="day-badge">Day 04</span><span class="day-desc">Gangotri Darshan &nbsp;|&nbsp; Scenic Valley Route</span></div>
+      <div class="day-row"><span class="day-badge">Day 05</span><span class="day-desc">Drive to Guptkashi → Phata &nbsp;|&nbsp; Overnight Stay</span></div>
+      <div class="day-row"><span class="day-badge">Day 06</span><span class="day-desc">Kedarnath &nbsp;|&nbsp; Trek to Temple + Evening Aarti</span></div>
+      <div class="day-row"><span class="day-badge">Day 07</span><span class="day-desc">Return Journey from Kedarnath &nbsp;|&nbsp; Drive to Badrinath</span></div>
+      <div class="day-row"><span class="day-badge">Day 08</span><span class="day-desc">Badrinath Darshan &nbsp;|&nbsp; Maha Aarti Blessing</span></div>
+      <div class="day-row"><span class="day-badge">Day 09</span><span class="day-desc">Drive to Rudraprayag &nbsp;|&nbsp; Evening at Sangam</span></div>
+      <div class="day-row"><span class="day-badge">Day 10</span><span class="day-desc">Return to Dehradun &nbsp;|&nbsp; Journey Concludes 🙏</span></div>
+    </div>
+  </div>
+
+  <!-- INCLUSIONS & EXCLUSIONS side-by-side feel -->
+  <div style="display:flex; gap:0; margin:18px 24px; border-radius:14px; overflow:hidden; border:1px solid #e4ece4;">
+    <!-- Inclusions -->
+    <div style="flex:1; border-right:1px solid #ddd;">
+      <div class="card-header inc-header" style="border-radius:0; font-size:15px;">✅ Inclusions</div>
+      <div class="card-body inc-body" style="padding:14px 16px;">
+        <div class="check-item"><span class="check-icon">✔️</span><span>Accommodation &amp; Daily Meals</span></div>
+        <div class="check-item"><span class="check-icon">✔️</span><span>Transport &amp; Driver Allowance</span></div>
+        <div class="check-item"><span class="check-icon">✔️</span><span>All Sightseeing &amp; Transfers</span></div>
+        <div class="check-item"><span class="check-icon">✔️</span><span>Complete Itinerary Execution</span></div>
+      </div>
+    </div>
+    <!-- Exclusions -->
+    <div style="flex:1;">
+      <div class="card-header exc-header" style="border-radius:0; font-size:15px;">❌ Exclusions</div>
+      <div class="card-body exc-body" style="padding:14px 16px;">
+        <div class="check-item"><span class="check-icon">✖️</span><span>GST &amp; Travel Insurance</span></div>
+        <div class="check-item"><span class="check-icon">✖️</span><span>Pony / Helicopter Charges</span></div>
+        <div class="check-item"><span class="check-icon">✖️</span><span>Personal Expenses</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT DETAILS -->
+  <div class="card">
+    <div class="card-header pay-header">💳 &nbsp;Payment Details</div>
+    <div class="card-body pay-body">
+      <table class="pay-table">
+        <tr><td>Account Name</td><td>Siddharth Saxena</td></tr>
+        <tr><td>Account No.</td><td>187501507736</td></tr>
+        <tr><td>IFSC Code</td><td>ICIC0001875</td></tr>
+        <tr><td>UPI ID</td><td>siddy5691@pingpay</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <h3>📞 Get in Touch</h3>
+    <div class="contact-row">
+      <div class="contact-item">
+        <span>Anjani Solanki</span>
+        <a href="tel:8077973067">+91 80779 73067</a>
+      </div>
+      <div class="contact-item">
+        <span>Roshna Mishra</span>
+        <a href="tel:8171093756">+91 81710 93756</a>
+      </div>
+    </div>
+    <a href="mailto:balajitravelsuk07@gmail.com" class="email-link">✉ balajitravelsuk07@gmail.com</a>
+    <div class="mahadev">🙏 &nbsp;Har Har Mahadev &nbsp;🙏</div>
+  </div>
+
+</div>
+</body>
+</html>
