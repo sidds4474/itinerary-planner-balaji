@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { QuoteFormData } from '@/types/quote';
+import GmailModal from './GmailModal';
 
 interface Props {
   form: QuoteFormData;
@@ -10,6 +12,7 @@ interface Props {
 }
 
 export default function DeliverySection({ form, pdfUrl, generating, onGenerate }: Props) {
+  const [gmailOpen, setGmailOpen] = useState(false);
   const whatsappMsg = encodeURIComponent(
     `Dear ${form.clientName || 'Guest'},\n\nGreetings from *Balaji Travels*! 🙏\n\nPlease find your *${form.packageName || 'Yatra'}* itinerary and quote attached.\n\nRoute: ${form.destination}\nDuration: ${form.durationNights} Nights & ${form.durationDays} Days\nVehicle: ${form.vehicle}\n\nWe look forward to making your journey memorable!\n\nThanks & Regards,\n${form.agentName || 'Balaji Travels Team'}\n${form.agentPhone || ''}`
   );
@@ -30,6 +33,7 @@ export default function DeliverySection({ form, pdfUrl, generating, onGenerate }
 
   return (
     <div>
+      <GmailModal open={gmailOpen} onClose={() => setGmailOpen(false)} form={form} />
       <div style={{ marginBottom: '20px' }}>
         <h2 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text-primary)' }}>Preview & Send</h2>
         <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>Review summary, generate PDF, then send via WhatsApp or Email.</p>
@@ -125,9 +129,27 @@ export default function DeliverySection({ form, pdfUrl, generating, onGenerate }
             >
               💬 Send on WhatsApp
             </a>
+            <button
+              type="button"
+              onClick={() => setGmailOpen(true)}
+              style={{
+                flex: 1,
+                padding: '12px',
+                background: 'rgba(234,67,53,0.08)',
+                border: '1px solid #EA4335',
+                color: '#EA4335',
+                borderRadius: '10px',
+                fontSize: '13px',
+                fontWeight: '600',
+                textAlign: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              ✉️  Send via Gmail
+            </button>
           </div>
           <p style={{ fontSize: '11px', color: 'var(--text-muted)', textAlign: 'center' }}>
-            Download the PDF first, then attach it manually on WhatsApp. The button pre-fills the message.
+            Download the PDF first. WhatsApp & Gmail buttons pre-fill the message — attach the PDF in the compose window before sending.
           </p>
         </div>
       )}

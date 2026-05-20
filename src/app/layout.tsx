@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import AuthedTopBar from "@/components/AuthedTopBar";
 
 export const metadata: Metadata = {
   title: "Balaji Travels — Quote Builder",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeProvider>
+          <AuthedTopBar />
           {children}
         </ThemeProvider>
       </body>
