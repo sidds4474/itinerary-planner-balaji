@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const response = NextResponse.redirect(new URL('/login', req.url));
+  const response = NextResponse.redirect(new URL('/login', req.url), { status: 303 });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
