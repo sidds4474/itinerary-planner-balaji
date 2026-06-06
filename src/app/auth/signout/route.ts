@@ -19,6 +19,6 @@ export async function POST(req: NextRequest) {
     }
   );
 
-  await supabase.auth.signOut();
+  try { await supabase.auth.signOut(); } catch { /* always redirect */ }
   return response;
 }

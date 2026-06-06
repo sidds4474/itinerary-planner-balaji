@@ -1,13 +1,6 @@
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-
-async function signOut() {
-  'use server';
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect('/login');
-}
+import SignOutButton from '@/components/SignOutButton';
 
 export default async function AuthedTopBar() {
   const supabase = await createClient();
@@ -45,13 +38,7 @@ export default async function AuthedTopBar() {
           border: `1px solid ${role === 'admin' ? 'var(--saffron)' : 'var(--bg-border)'}`,
           borderRadius: '4px', padding: '2px 6px', whiteSpace: 'nowrap',
         }}>{role}</span>
-        <form action={signOut}>
-          <button type="submit" style={{
-            fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)',
-            background: 'transparent', border: '1px solid var(--bg-border)', borderRadius: '6px',
-            padding: '4px 10px', cursor: 'pointer', whiteSpace: 'nowrap',
-          }}>Sign out</button>
-        </form>
+        <SignOutButton />
       </div>
     </header>
   );
