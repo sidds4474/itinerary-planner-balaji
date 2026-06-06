@@ -64,7 +64,7 @@ export default function InclusionsSection({ form, update }: Props) {
         <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>Pre-filled with standard boilerplate. Edit as needed for this quote.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--bg-border)', borderRadius: '12px', overflow: 'hidden' }}>
           <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--bg-border)', background: 'rgba(45, 80, 22, 0.2)' }}>
             <span style={{ fontSize: '12px', fontWeight: '700', color: '#6BBF45' }}>✓ Inclusions</span>

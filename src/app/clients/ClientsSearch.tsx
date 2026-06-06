@@ -67,7 +67,7 @@ export default function ClientsSearch({ clients }: { clients: ClientRow[] }) {
                   {c.phone}{c.email ? ` · ${c.email}` : ''}
                 </div>
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              <div className="hidden sm:block" style={{ fontSize: '11px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                 Updated {new Date(c.updated_at).toLocaleDateString()}
               </div>
             </Link>

@@ -19,9 +19,8 @@ export default async function AuthedTopBar() {
     <header style={{
       position: 'sticky', top: 0, zIndex: 50,
       background: 'var(--bg-surface)', borderBottom: '1px solid var(--bg-border)',
-      padding: '10px 20px', display: 'flex', alignItems: 'center', gap: '20px',
-    }}>
-      <div style={{ fontWeight: '700', fontSize: '14px', color: 'var(--saffron)' }}>
+    }} className="px-3 sm:px-5 py-2.5 flex items-center gap-3 sm:gap-5">
+      <div style={{ fontWeight: '700', fontSize: '14px', color: 'var(--saffron)', whiteSpace: 'nowrap' }}>
         Balaji Travels
       </div>
       <nav style={{ display: 'flex', gap: '4px' }}>
@@ -29,20 +28,20 @@ export default async function AuthedTopBar() {
         <Link href="/clients" style={navLink}>Clients</Link>
       </nav>
       <div style={{ flex: 1 }} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px' }}>
-        <span style={{ color: 'var(--text-secondary)' }}>{displayName}</span>
-        <span style={{
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', minWidth: 0 }}>
+        <span className="hidden sm:inline truncate max-w-[140px]" style={{ color: 'var(--text-secondary)' }}>{displayName}</span>
+        <span className="hidden sm:inline" style={{
           fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em',
           color: role === 'admin' ? 'var(--saffron)' : 'var(--text-muted)',
           background: role === 'admin' ? 'rgba(255,107,0,0.12)' : 'var(--bg-elevated)',
           border: `1px solid ${role === 'admin' ? 'var(--saffron)' : 'var(--bg-border)'}`,
-          borderRadius: '4px', padding: '2px 6px',
+          borderRadius: '4px', padding: '2px 6px', whiteSpace: 'nowrap',
         }}>{role}</span>
         <form action="/auth/signout" method="post">
           <button type="submit" style={{
             fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)',
             background: 'transparent', border: '1px solid var(--bg-border)', borderRadius: '6px',
-            padding: '4px 10px', cursor: 'pointer',
+            padding: '4px 10px', cursor: 'pointer', whiteSpace: 'nowrap',
           }}>Sign out</button>
         </form>
       </div>

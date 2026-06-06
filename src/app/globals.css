@@ -76,3 +76,40 @@ option {
 ::-webkit-scrollbar-track        { background: var(--bg-elevated); }
 ::-webkit-scrollbar-thumb        { background: var(--bg-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover  { background: var(--text-muted); }
+
+/* ─── Hotel stops table (responsive) ─────────────── */
+.hotel-stops-header,
+.hotel-stops-row {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+}
+
+.hotel-stops-header {
+  grid-template-columns: 1fr 1.4fr 1.6fr 24px;
+  margin-bottom: 8px;
+}
+
+.hotel-stops-row {
+  grid-template-columns: 1fr 1.4fr 1.6fr 24px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .hotel-stops-header {
+    display: none;
+  }
+  .hotel-stops-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "days  dest"
+      "hotel hotel";
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--bg-border);
+  }
+  .hotel-stops-row > *:nth-child(1) { grid-area: days; }
+  .hotel-stops-row > *:nth-child(2) { grid-area: dest; }
+  .hotel-stops-row > *:nth-child(3) { grid-area: hotel; }
+  .hotel-stops-row > *:nth-child(4) { display: none; }
+}

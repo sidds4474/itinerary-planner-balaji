@@ -119,13 +119,13 @@ export default function HotelOptionsSection({ form, update }: Props) {
 
           {/* Table */}
           <div style={{ padding: '16px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr 1.6fr 24px', gap: '8px', marginBottom: '8px' }}>
+            <div className="hotel-stops-header">
               {['Days', 'Destination', 'Hotel / Accommodation', ''].map(h => (
                 <span key={h} style={{ fontSize: '10px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</span>
               ))}
             </div>
             {opt.hotels.map((stop, stopIdx) => (
-              <div key={stopIdx} style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr 1.6fr 24px', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
+              <div key={stopIdx} className="hotel-stops-row">
                 <input style={inputStyle} placeholder="Day 01" value={stop.days} onChange={e => updateStop(optIdx, stopIdx, { days: e.target.value })} onFocus={e => e.target.style.borderColor = 'var(--saffron)'} onBlur={e => e.target.style.borderColor = 'var(--bg-border)'} />
                 <input style={inputStyle} placeholder="e.g. Barkot" value={stop.destination} onChange={e => updateStop(optIdx, stopIdx, { destination: e.target.value })} onFocus={e => e.target.style.borderColor = 'var(--saffron)'} onBlur={e => e.target.style.borderColor = 'var(--bg-border)'} />
                 <input style={inputStyle} placeholder="e.g. Hotel Trishul" value={stop.hotel} onChange={e => updateStop(optIdx, stopIdx, { hotel: e.target.value })} onFocus={e => e.target.style.borderColor = 'var(--saffron)'} onBlur={e => e.target.style.borderColor = 'var(--bg-border)'} />
@@ -143,7 +143,7 @@ export default function HotelOptionsSection({ form, update }: Props) {
           </div>
 
           {/* Price */}
-          <div style={{ padding: '12px 16px', borderTop: '1px solid var(--bg-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ padding: '12px 16px', borderTop: '1px solid var(--bg-border)' }} className="flex flex-wrap items-center gap-3">
             <span style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
               {form.pricingMode === 'total' ? 'Total Cost (₹)' : 'Per Person (₹)'}
             </span>

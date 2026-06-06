@@ -336,23 +336,23 @@ export default function PackageSection({ form, update }: Props) {
         <div style={sectionHeadingStyle}>Package Details</div>
         <div className="space-y-4">
           {/* Route Template Picker */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--bg-border)', borderRadius: '8px', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Quick Fill Route →</span>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--bg-border)', borderRadius: '8px', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <span className="hidden sm:inline" style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Quick Fill →</span>
             <button
               type="button"
               onClick={() => setPickerOpen(true)}
               style={{
-                flex: 1, minWidth: '220px', textAlign: 'left',
+                flex: 1, minWidth: '180px', textAlign: 'left',
                 background: 'var(--bg-input)', border: '1px solid var(--bg-border)',
                 color: 'var(--saffron)', borderRadius: '8px', padding: '10px 12px',
                 fontSize: '13px', fontWeight: '500', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--saffron)'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--bg-border)'; }}
             >
               <span>Browse {ROUTE_TEMPLATES.length} routes…</span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '400' }}>Search · Click to apply</span>
+              <span className="hidden sm:inline" style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '400' }}>Search · Click to apply</span>
             </button>
             <button
               type="button"
@@ -366,9 +366,8 @@ export default function PackageSection({ form, update }: Props) {
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--saffron)'; e.currentTarget.style.color = 'var(--saffron)'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--bg-border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
             >
-              + Save as Template
+              + Save Template
             </button>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Hotels & itinerary auto-populated. You can still edit.</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

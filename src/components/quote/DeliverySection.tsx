@@ -89,7 +89,7 @@ export default function DeliverySection({ form, pdfUrl, generating, onGenerate }
       {/* Send buttons */}
       {pdfUrl && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="flex flex-col sm:flex-row gap-3">
             <a
               href={pdfUrl}
               download={`${form.packageName || 'Quote'}_${form.clientName || 'Guest'}.pdf`}
